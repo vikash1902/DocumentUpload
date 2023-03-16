@@ -64,16 +64,18 @@ public class UploadServiceImpl implements UploadService {
 			}
 			data = uploadRepository.findAllById(iterable).stream().map(this::mapToDoc).collect(Collectors.toList());
 			Iterator<Long> itr = set.iterator();
-			String key = "";
-			while (itr.hasNext()) {
-				key = key + itr.next() + ",";
+			if (set.size() != 0) {
+				String key = "";
+				while (itr.hasNext()) {
+					key = key + itr.next() + ",";
+				}
+				key = key.substring(0, key.length() - 1);
+				HashMap<String, String> hMap = new HashMap<>();
+				hMap.put("status", "These are the invalid id please inter correct id");
+				hMap.put("ids", key);
+				responce.setError(hMap);
 			}
-			key = key.substring(0, key.length() - 1);
-			HashMap<String, String> hMap = new HashMap<>();
-			hMap.put("status", "These are the invalid id please inter correct id");
-			hMap.put("ids", key);
 			responce.setDoc(data);
-			responce.setError(hMap);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
